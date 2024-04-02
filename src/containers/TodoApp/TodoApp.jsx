@@ -15,21 +15,21 @@ function TodoApp() {
     })
   }
 
-  function handleTask(event) {
+  function handleCompleteTask(event) {
     const { target } = event
     const index = target.getAttribute('dataindex')
-    if(target.type === 'checkbox'){
-      //console.log(`El evento se ejecuto desde un checkbox y la tarea es: ${taskList[index]}`);
-      setCompletedTasks(prevCompletedTasks => {
-        return [...prevCompletedTasks, taskList[index]]
-      })
-      setTaskList(taskList.filter(task => task !== taskList[index]))
-    }
-    if(event.target.value === 'Borrar'){
-      setTaskList(prevTasks => {
-        
-      })
-    }
+    //console.log(`El evento se ejecuto desde un checkbox y la tarea es: ${taskList[index]}`);
+    setCompletedTasks(prevCompletedTasks => {
+      return [...prevCompletedTasks, taskList[index]]
+    })
+    setTaskList(taskList.filter(task => task !== taskList[index]))
+  }
+
+  function handleRemoveTask(event) {
+    const { target } = event
+    const index = target.getAttribute('dataindex')
+    console.log(`El elemento seleccionado es: ${taskList[index]}`);
+    setTaskList(taskList.filter(task => task !== taskList[index]))
   }
   return (
     <section>
@@ -49,13 +49,13 @@ function TodoApp() {
                 <input 
                 dataindex={index}
                 type='checkbox' 
-                onChange={handleTask} 
+                onChange={handleCompleteTask} 
                 checked={false}
                 />
                 <p>{task}</p>
-                <button 
+                <button
                 dataindex={index} 
-                onChange={handleTask}>Borrar</button>
+                onClick={handleRemoveTask}>Borrar</button>
               </>
             )
           })
@@ -64,7 +64,9 @@ function TodoApp() {
       </div>
       <div>
         <h3>Completadas:</h3>
-        <p>{completedTasks}</p>
+        {completedTasks.map(task => {
+          return <p>{task}</p>
+        })}
       </div>
     </section>
   )
